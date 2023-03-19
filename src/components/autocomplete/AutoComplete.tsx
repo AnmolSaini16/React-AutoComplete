@@ -1,0 +1,50 @@
+import React, { useEffect, useRef, useState } from "react";
+import InputContainer from "./InputContainer";
+import SearchResultsContainer from "./SearchResultsContainer";
+
+interface props {
+  options: any;
+}
+const AutoComplete: React.FC<props> = ({ options }) => {
+  const [searchText, setSearchText] = useState<string>("");
+  const [showSearchResults, setShowSearchResults] = useState<boolean>(false);
+  const ref: any = useRef(null);
+
+  const filteredOptions = options?.filter((item: any) =>
+    item.toLowerCase().includes(searchText.toLowerCase())
+  );
+
+  useEffect(() => {
+    function handleClickOutside(event: { target: any }) {
+      if (ref.current && !ref.current.contains(event.target)) {
+        setShowSearchResults(false);
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [ref]);
+
+  return (
+    <div className="autocomplete-container" ref={ref}>
+      <InputContainer
+        setSearchText={setSearchText}
+        searchText={searchText}
+        setShowSearchResults={setShowSearchResults}
+        showSearchResults={showSearchResults}
+      />
+      <div className="searchResults-container">
+        {showSearchResults && (
+          <SearchResultsContainer
+            options={filteredOptions}
+            setSearchText={setSearchText}
+            setShowSearchResults={setShowSearchResults}
+          />
+        )}
+      </div>
+    </div>
+  );
+};
+
+export default AutoComplete;
