@@ -4,8 +4,9 @@ import SearchResultsContainer from "./SearchResultsContainer";
 
 interface props {
   options: any;
+  placeholder: string;
 }
-const AutoComplete: React.FC<props> = ({ options }) => {
+const AutoComplete: React.FC<props> = ({ options, placeholder }) => {
   const [searchText, setSearchText] = useState<string>("");
   const [showSearchResults, setShowSearchResults] = useState<boolean>(false);
   const ref: any = useRef(null);
@@ -26,6 +27,11 @@ const AutoComplete: React.FC<props> = ({ options }) => {
     };
   }, [ref]);
 
+  useEffect(() => {
+    // If typed text is not a option, clear text filed
+    if (!showSearchResults && !options.includes(searchText)) setSearchText("");
+  }, [showSearchResults]);
+
   return (
     <div className="autocomplete-container" ref={ref}>
       <InputContainer
@@ -33,6 +39,7 @@ const AutoComplete: React.FC<props> = ({ options }) => {
         searchText={searchText}
         setShowSearchResults={setShowSearchResults}
         showSearchResults={showSearchResults}
+        placeholder={placeholder}
       />
       <div className="searchResults-container">
         {showSearchResults && (

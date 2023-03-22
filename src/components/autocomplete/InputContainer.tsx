@@ -12,6 +12,7 @@ interface props {
   disabled?: boolean;
   searchText: string;
   showSearchResults: boolean;
+  placeholder: string
 }
 
 const InputContainer: React.FC<props> = ({
@@ -20,11 +21,12 @@ const InputContainer: React.FC<props> = ({
   disabled = false,
   searchText,
   showSearchResults,
+  placeholder
 }) => {
   return (
     <div className="input-container">
       <input
-        placeholder="Search..."
+        placeholder={placeholder}
         onChange={(e) => {
           setSearchText(e.target.value);
           setShowSearchResults(true);
