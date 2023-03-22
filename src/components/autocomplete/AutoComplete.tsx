@@ -28,7 +28,7 @@ const AutoComplete: React.FC<props> = ({ options, placeholder }) => {
   }, [ref]);
 
   useEffect(() => {
-    // If typed text is not a option, clear text filed
+    // If typed text is not an option, clear text field
     if (!showSearchResults && !options.includes(searchText)) setSearchText("");
   }, [showSearchResults]);
 
